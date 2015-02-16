@@ -1,9 +1,14 @@
 class TodoItemsController < ApplicationController
-	before_action :find_todo_item, only:[:edit, :update, :destroy]
+	before_action :find_todo_item, only:[:update, :destroy, :edit]
 
 		def index
 			@todo_item = TodoItem.new
 			@all_todo_items = TodoItem.all
+		  if params[:complete] == "true"
+		    @all_todo_items = @all_todo_items.where(complete: true)	
+		  elsif params[:complete] == "false"	
+		  	@all_todo_items = @all_todo_items.where(complete: false)
+		  end	
 		end
 
 		def create
@@ -22,6 +27,11 @@ class TodoItemsController < ApplicationController
 
 		def destroy
 			@todo_item.destroy
+			redirect_to root_url
+		end
+
+		def clear_completed
+			TodoItem.where(complete: true).update_all(complete: false)
 			redirect_to root_url
 		end
 		

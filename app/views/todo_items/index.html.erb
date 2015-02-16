@@ -10,9 +10,9 @@
 	<!-- This section should be hidden by default and shown when there are todos -->
 	<% if @all_todo_items.count > 0 %>
 	<section id="main">
-		<input id="toggle-all" type="checkbox">
+<!-- 		<input id="toggle-all" type="checkbox">
 		<label for="toggle-all">Mark all as complete</label> 
-		
+ -->		
 		<ul id="todo-list">
 			<% @all_todo_items.each do |item| %>
 			<!-- List items should get the class `editing` when editing and `completed` when marked as completed -->
@@ -37,27 +37,26 @@
 	<% end %>
 	<!-- This footer should hidden by default and shown when there are todos -->
 	<footer id="footer">
-		<!-- This should be `0 items left` by default -->
 		<span id="todo-count">
-			<strong><%= pluralize@all_todo_items.where(complete: false).count, 'item' %></strong> item left</span>
+			<strong><%= pluralize@all_todo_items.where(complete: false).count, 'item' %></strong>  left</span>
 			
 
 		<!-- Remove this if you don't implement routing -->
 		<ul id="filters">
 			<li>
-				<a class="selected" href="#/">All</a>
+				<%= link_to 'All', root_path, class: ('selected' if params[:complete] == nil)%>
 			</li>
 			<li>
-				<a href="#/active">Active</a>
+				<%= link_to 'Active', root_path(complete: false), class:('selected' if params[:complete] == false)%>
 			</li>
 			<li>
-				<a href="#/completed">Completed</a>
+				<%= link_to 'Completed', root_path(complete: true), class:('selected' if params[:complete] == true)%>
 			</li>
 		</ul>
-		<!-- Hidden if no completed items are left ↓ -->
-		<button id="clear-completed"></button>
+			<% unless @all_todo_items.where(complete: true).count==0%>
+			 <button id="clear-completed"></button>
 	</footer>
-
+<% end %>
 </section>
 <footer id="info">
 	<p>Double-click to edit a todo</p>
